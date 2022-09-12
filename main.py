@@ -21,7 +21,7 @@ for sheet in sheet_list:
     sheet = str(sheet)
 
     sheet_df = pd.read_csv(sheet)
-    sheet_df = sheet_df[["Index", "Grade"]]
+    sheet_df = sheet_df[["Index No", "Result"]]
 
     subject_code = sheet[sheet.rfind('/') + 1: sheet.rfind('.')]
     subjects_indices.append(subject_code)
@@ -36,9 +36,9 @@ for sheet in sheet_list:
         else:
             STUDENTS[stu_index].add_subject(subject_code, grade)
 
-result_df = pd.DataFrame(columns=["Index"] + subjects_names)
+result_df = pd.DataFrame(columns=["Index", "Total GPV", "GPA"] + subjects_names)
 for i in range(len(STUDENTS)):
-    row = [STUDENTS[i].id]
+    row = [STUDENTS[i].id, STUDENTS[i].get_total_gpv(), STUDENTS[i].get_gpa()]
     for j in range(len(subjects_indices)):
         row.append(
             STUDENTS[i].get_subject(subjects_indices[j]).get_grade() if STUDENTS[i].get_subject(subjects_indices[j])
@@ -46,4 +46,5 @@ for i in range(len(STUDENTS)):
         )
     result_df.loc[i] = row
 
-result_df.to_csv("result.csv", index=False)
+
+result_df.to_csv("Rankings_CS_First_Year.csv", index=False)

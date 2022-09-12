@@ -31,3 +31,8 @@ class Student:
     def get_id(self):
         return self.id
 
+    def get_total_gpv(self):
+        return self.total_gpv
+
+    def get_gpa(self):
+        return self.gpa

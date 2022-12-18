@@ -27,8 +27,11 @@ for sheet in sheet_list:
     sheet_df = sheet_df[["Index No", "Result"]]
 
     subject_code = sheet[sheet.rfind('/') + 1: sheet.rfind('.')]
-    subjects_indices.append(subject_code)
-    subjects_names.append(Subject.get_sub_name(subject_code))
+    if 'R' not in subject_code:
+        subjects_indices.append(subject_code)
+        subjects_names.append(Subject.get_sub_name(subject_code))
+    else:
+        subject_code = subject_code[:subject_code.find('R') - 1]  # SCS 2201-R -> SCS 2201
 
     for index, grade in sheet_df.itertuples(index=False):
         if str(index)[:4] != START_INDEX:

@@ -1,87 +1,37 @@
+import pandas as pd
+
+EXCEL_FILE = "gradings.xlsx"
+SHEET_1 = "subject_info"
+SHEET_2 = "grading_gpv"
+
+
 class Subject:
     code: str = None
     name: str = None
     grade: str = None
-    gpv: int = None
+    gpv: float = None
+    credit: int = None
+    # static
+    subject_info: pd.DataFrame = None
+    grading_gpv: pd.DataFrame = None
 
     def __init__(self, code_, grade_):
         self.code = code_
         self.name = get_sub_name(code_)
         self.grade = grade_
-        self.gpv = self.get_gpv(grade_) * self.get_credit_value(code_)
+        self.credit = self.get_credit_value(code_)
+        self.gpv = self.get_gpv(grade_) * self.credit
+        if self.subject_info is None or self.grading_gpv is None:
+            initialize_readings()
 
     @staticmethod
     def get_credit_value(code_):
-        if code_ == "SCS 1201":
-            return 3
-        elif code_ == "SCS 1202":
-            return 3
-        elif code_ == "SCS 1203":
-            return 3
-        elif code_ == "SCS 1204":
-            return 2
-        elif code_ == "SCS 1205":
-            return 2
-        elif code_ == "SCS 1206":
-            return 2
-        elif code_ == "SCS 1207":
-            return 2
-        elif code_ == "SCS 1208":
-            return 3
-        elif code_ == "SCS 1209":
-            return 3
-        elif code_ == "SCS 1210":
-            return 2
-        elif code_ == "SCS 1211":
-            return 2
-        elif code_ == "SCS 1212":
-            return 2
-        elif code_ == "SCS 1213":
-            return 2
-        elif code_ == "SCS 1214":
-            return 3
-        # Second Year
-        elif code_ == "SCS 2201":
-            return 3
-        elif code_ == "SCS 2203":
-            return 2
-        elif code_ == "SCS 2204":
-            return 3
-        elif code_ == "SCS 2205":
-            return 3
+        return int(Subject.subject_info[Subject.subject_info["Code"] == code_]["Credits"].values[0])
 
     @staticmethod
     def get_gpv(grade_):
-        if grade_ == "A+":
-            return 4
-        elif grade_ == "A":
-            return 4
-        elif grade_ == "A-":
-            return 3.7
-        elif grade_ == "B+":
-            return 3.3
-        elif grade_ == "B":
-            return 3.0
-        elif grade_ == "B-":
-            return 2.7
-        elif grade_ == "C+":
-            return 2.3
-        elif grade_ == "C":
-            return 2.0
-        elif grade_ == "C-":
-            return 1.7
-        elif grade_ == "D+":
-            return 1.3
-        elif grade_ == "D":
-            return 1.0
-        elif grade_ == "E":
-            return 0.0
-        elif grade_ == "F":
-            return 0.0
-        elif grade_ == "NC":
-            return 0.0
-        elif grade_ == "#":
-            return 0.0
+        return float(Subject.grading_gpv[Subject.grading_gpv["Grade"] == grade_]["GPV"].values[0]) \
+            if (grade_ != 'NC' or '#') else 'AB'
 
     def get_grade(self):
         return self.grade
@@ -91,40 +41,10 @@ class Subject:
 
 
 def get_sub_name(code_):
-    if code_ == "SCS 1201":
-        return "Data Structures and Algorithms I"
-    elif code_ == "SCS 1202":
-        return "Programming Using C"
-    elif code_ == "SCS 1203":
-        return "Database I"
-    elif code_ == "SCS 1204":
-        return "Discrete Mathematics I"
-    elif code_ == "SCS 1205":
-        return "Computer Systems"
-    elif code_ == "SCS 1206":
-        return "Laboratory I"
-    elif code_ == "SCS 1207":
-        return "Software Engineering I"
-    elif code_ == "SCS 1208":
-        return "Data Structures and Algorithms II"
-    elif code_ == "SCS 1209":
-        return "Object Oriented Programming"
-    elif code_ == "SCS 1210":
-        return "Software Engineering II"
-    elif code_ == "SCS 1211":
-        return "Mathematical Methods I"
-    elif code_ == "SCS 1212":
-        return "Foundation of Computer Science"
-    elif code_ == "SCS 1213":
-        return "Probability and Statistics"
-    elif code_ == "SCS 1214":
-        return "Operating Systems I"
-    # Second Year
-    elif code_ == "SCS 2201":
-        return "Data Structures and Algorithms III"
-    elif code_ == "SCS 2203":
-        return "Software Engineering III"
-    elif code_ == "SCS 2204":
-        return "Functional Programming"
-    elif code_ == "SCS 2205":
-        return "Computer Networks I"
+    return Subject.subject_info[Subject.subject_info["Code"] == code_]["Name"].values[0]
+
+
+def initialize_readings():
+    excel = pd.ExcelFile(EXCEL_FILE)
+    Subject.subject_info = pd.read_excel(excel, SHEET_1)
+    Subject.grading_gpv = pd.read_excel(excel, SHEET_2)

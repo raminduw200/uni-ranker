@@ -47,4 +47,4 @@ for i in range(len(STUDENTS)):
     result_df.loc[i] = row
 
 
-result_df.to_csv("Rankings_CS_First_Year.csv", index=False)
+result_df.to_csv("Rankings_CS_Second_Year_First_Sem.csv", index=False)

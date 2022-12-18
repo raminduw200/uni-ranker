@@ -7,7 +7,7 @@ class Student:
     total_gpv: int = None
     gpa: float = None
     subjects: [Subject] = None
-    TOTAL_CREDIT: int = 34
+    TOTAL_CREDIT: int = 45
 
     def __init__(self, id_):
         self.id = id_

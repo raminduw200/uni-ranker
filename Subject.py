@@ -40,6 +40,15 @@ class Subject:
             return 2
         elif code_ == "SCS 1214":
             return 3
+        # Second Year
+        elif code_ == "SCS 2201":
+            return 3
+        elif code_ == "SCS 2203":
+            return 2
+        elif code_ == "SCS 2204":
+            return 3
+        elif code_ == "SCS 2205":
+            return 3
 
     @staticmethod
     def get_gpv(grade_):
@@ -68,6 +77,10 @@ class Subject:
         elif grade_ == "E":
             return 0.0
         elif grade_ == "F":
+            return 0.0
+        elif grade_ == "NC":
+            return 0.0
+        elif grade_ == "#":
             return 0.0
 
     def get_grade(self):
@@ -106,3 +119,12 @@ def get_sub_name(code_):
         return "Probability and Statistics"
     elif code_ == "SCS 1214":
         return "Operating Systems I"
+    # Second Year
+    elif code_ == "SCS 2201":
+        return "Data Structures and Algorithms III"
+    elif code_ == "SCS 2203":
+        return "Software Engineering III"
+    elif code_ == "SCS 2204":
+        return "Functional Programming"
+    elif code_ == "SCS 2205":
+        return "Computer Networks I"

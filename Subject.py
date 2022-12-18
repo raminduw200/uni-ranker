@@ -33,6 +33,14 @@ class Subject:
         return float(Subject.grading_gpv[Subject.grading_gpv["Grade"] == grade_]["GPV"].values[0]) \
             if (grade_ != 'NC' or '#') else 'AB'
 
+    def update_grade(self, grade_):
+        self.grade = grade_
+        self.gpv = self.get_gpv(grade_) * self.credit
+
+    @staticmethod
+    def get_grades_as_list():
+        return Subject.grading_gpv["Grade"].values.tolist()
+
     def get_grade(self):
         return self.grade
 

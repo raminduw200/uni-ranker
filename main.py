@@ -5,6 +5,9 @@ from Student import Student
 
 STUDENTS = []
 SHEETS_DIR = "Sheets/"
+START_INDEX = '2000'  # to filter only current year students(Ignore repeat students)
+
+Subject.initialize_readings()
 
 
 def stu_exits(id_):
@@ -28,6 +31,8 @@ for sheet in sheet_list:
     subjects_names.append(Subject.get_sub_name(subject_code))
 
     for index, grade in sheet_df.itertuples(index=False):
+        if str(index)[:4] != START_INDEX:
+            continue
         stu_index = stu_exits(index)
         if stu_index < 0:  # student not exists
             stu = Student(index)
@@ -45,6 +50,5 @@ for i in range(len(STUDENTS)):
             else ""
         )
     result_df.loc[i] = row
-
 
 result_df.to_csv("Rankings_CS_Second_Year_First_Sem.csv", index=False)

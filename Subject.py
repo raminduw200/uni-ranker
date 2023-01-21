@@ -1,6 +1,6 @@
 import pandas as pd
 
-EXCEL_FILE = "gradings.xlsx"
+EXCEL_FILE = "cs-gradings.xlsx"
 SHEET_1 = "subject_info"
 SHEET_2 = "grading_gpv"
 
@@ -31,7 +31,7 @@ class Subject:
     @staticmethod
     def get_gpv(grade_):
         return float(Subject.grading_gpv[Subject.grading_gpv["Grade"] == grade_]["GPV"].values[0]) \
-            if (grade_ != 'NC' or '#') else 'AB'
+            if (grade_ not in ('NC', '#', 'AB')) else 0
 
     def update_grade(self, grade_):
         self.grade = grade_
